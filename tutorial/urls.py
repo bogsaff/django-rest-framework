@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import include, path
 from rest_framework import routers
-
+from snippets import urls as snippets_urls
 from tutorial.quickstart import views
 
 router = routers.DefaultRouter()
@@ -27,5 +27,5 @@ router.register(r'groups', views.GroupViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('o/', include('snippets.urls', namespace='snippets'))
+    path('', include(snippets_urls))
 ]
