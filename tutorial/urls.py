@@ -18,6 +18,7 @@ from rest_framework import routers
 from snippets import urls as snippets_urls
 from languages import urls as leaguages_urls
 from books import urls as books_urls
+from products import urls as products_urls
 from tutorial.quickstart import views
 
 router = routers.DefaultRouter()
@@ -32,5 +33,5 @@ urlpatterns = [
     path('', include(snippets_urls)),
     path('', include(leaguages_urls)),
     path('', include(books_urls)),
-
+    path('', include(products_urls)),
 ]

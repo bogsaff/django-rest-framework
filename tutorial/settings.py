@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'snippets',
     'languages',
-    'books'
+    'books',
+    'products'
 ]
 
 MIDDLEWARE = [
