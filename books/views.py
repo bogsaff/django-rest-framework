@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from books.serializers import BookSerializer
 from books.models import Book
 from rest_framework.decorators import api_view
@@ -24,7 +26,7 @@ from rest_framework.decorators import api_view
 
 
 
-class BookList(ListAPIView):
+class BookList(APIView):
     def post(self, request, format=None):
         serializer = BookSerializer(data=request.data)
         if serializer.is_valid():
@@ -33,5 +35,5 @@ class BookList(ListAPIView):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
     def get(self, request, fotmat=None):
         books = Book.objects.all()
-        serializer = BookSerializer(books, namy =True)
+        serializer = BookSerializer(books, many=True)
         return Response(serializer.data)
