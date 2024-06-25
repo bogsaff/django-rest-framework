@@ -1,12 +1,13 @@
 from django.http import Http404
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.contrib.auth.models import User
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
-
+from snippets.serializers import UserSerializer
 
 @api_view(['GET', 'POST'])
 def snippet_list(request):
@@ -68,6 +69,8 @@ class SnippetList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 class SnippetDetail(APIView):
     """
@@ -96,3 +99,13 @@ class SnippetDetail(APIView):
         snippet = self.get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserList(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
