@@ -8,7 +8,8 @@ from django.contrib.auth.models import User
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
 from snippets.serializers import UserSerializer
-
+from rest_framework import permissions
+from snippets.permissions import IsOwnerOrReadOnly
 @api_view(['GET', 'POST'])
 def snippet_list(request):
     """
@@ -32,6 +33,7 @@ def snippet_detail(request, pk):
     """
     Retrieve, update or delete a code snippet.
     """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     try:
         snippet = Snippet.objects.get(pk=pk)
     except Snippet.DoesNotExist:
@@ -57,6 +59,7 @@ class SnippetList(APIView):
     """
     List all snippets, or create a new snippet.
     """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         snippets = Snippet.objects.all()
         serializer = SnippetSerializer(snippets, many=True)
